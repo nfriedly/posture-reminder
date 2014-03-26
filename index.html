@@ -111,6 +111,7 @@
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script>
+        var afterDomUpdate = (typeof setImmediate == "undefined") ? setTimeout : setImmediate;
         var interval,
             $hours = $('#hours'),
             $minutes = $('#minutes'),
@@ -131,6 +132,9 @@
         }
         // splits seconds up into hours minutes and seconds
         function setTime(totalSeconds) {
+            if (totalSeconds < 0) {
+                totalSeconds = 0;
+            }
             var hours = Math.floor(totalSeconds/3600),
                 minutes = Math.floor( (totalSeconds%3600)/60 ),
                 seconds = Math.round( totalSeconds%60);
@@ -142,25 +146,28 @@
         
         function ask() {
             var isPostureGood = confirm("How's your posture?\n\nOK = good posture\nCancel = bad posture");
-            var totalSeconds = getTime(),
-                multiplier = parseFloat(isPostureGood ? $success.val() : $failure.val()) || (isPostureGood ? 1.6 : 0.5);
-            intervalLength = totalSeconds * multiplier;
-            setTime(intervalLength);
+            var multiplier = parseFloat(isPostureGood ? $success.val() : $failure.val()) || (isPostureGood ? 1.6 : 0.5);
+            // round up for good posture, round down for bad - this way we should avoid getting stuck on the same value.
+            intervalLength = Math[isPostureGood ? "ceil" : "floor"](intervalLength * multiplier);
         }
         function update() {
             intervalRemaining--;
             setTime(intervalRemaining);
-            if (intervalRemaining <= 0) {
+            if (intervalRemaining < 1) {
                 clearInterval(interval);
-                ask();
-                setup()
+                // give the browser a chance to update the DOM before creating the alert (we want it to show 0 seconds remaining, not 1);
+                afterDomUpdate(function(){
+                    ask();
+                    setup();
+                });
             }
         }
         function setup() {
-            intervalLength = getTime();
             intervalRemaining = intervalLength;
-            update(); // make it show results instantly instead of after a second
-            interval = setInterval(update, 1000);
+            setTime(intervalLength);
+            if (intervalRemaining > 0) { // otherwise our first update call killed it
+                interval = setInterval(update, 1000);
+            }
         }
         function stop() {
             clearInterval(interval);
@@ -174,9 +181,11 @@
             }
             else {
                 $go.addClass('btn-danger').removeClass('btn-primary').text('Stop');
+                intervalLength = getTime();
                 setup();
             }
         });
+        
     </script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
