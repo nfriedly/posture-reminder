@@ -145,7 +145,7 @@
         
         
         function ask() {
-            var isPostureGood = confirm("How's your posture?\n\nOK = good posture\nCancel = bad posture");
+            var isPostureGood = confirm("How's your posture?\n\n - Good posture: click [OK]\n - Bad posture: click [Cancel]");
             var multiplier = parseFloat(isPostureGood ? $success.val() : $failure.val()) || (isPostureGood ? 1.6 : 0.5);
             // round up for good posture, round down for bad - this way we should avoid getting stuck on the same value.
             intervalLength = Math[isPostureGood ? "ceil" : "floor"](intervalLength * multiplier);
