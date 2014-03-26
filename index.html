@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Posture Reminder</title>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/superhero/bootstrap.min.css"/>
+<style type="text/css">
+.splash {
+    background: linear-gradient(20deg, #080F1F 30%, #2B4B5A 87%, #435E67 100%) repeat fixed 0 0 rgba(0, 0, 0, 0);
+    color: #FFFFFF;
+    padding: 4em 0 2em;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">Posture Reminder</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="http://nfriedly.com/" title="Javascript and Node.js expert">by Nathan Friedly</a>
+            </li>
+            <li>
+              <a href="https://github.com/nfriedly/posture-reminder"><i class="fa fa-github"></i> Source</a>
+            </li>
+        </div>
+      </div>
+    </div>
+
+      <header class="jumbotron splash">
+
+             <div class="container">
+
+            <h1>Posture Reminder</h1>
+            <p class="lead">Keeping your back on the straight and narrow.</p>
+            </div>
+      </header>
+      <main>
+        <div class="container">
+        <form class="form-horizontal">
+            <fieldset>
+              <legend>Settings</legend>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="minutes">Delay</label>
+                <div class="col-lg-10">
+                  <input type="text" id="minutes" name="minutes" class="form-control" value="1">
+                  <span class="help-block">Time between prompts (in minutes)</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="success">Success Multiplier</label>
+                <div class="col-lg-10">
+                  <input type="text" id="success" name="success" class="form-control" value="1.6">
+                  <span class="help-block">Should be &gt; 1</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="failure">Failure Multiplier</label>
+                <div class="col-lg-10">
+                  <input type="text" id="failure" name="failure" class="form-control" value="0.5">
+                  <span class="help-block">Should be &lt; 1</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                  <button class="btn btn-default" id="stop" type="button">Stop</button>
+                  <button class="btn btn-primary" id="go" type="button">Start/Update</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          </div>
+      </main>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script>
+        var MILISECONDS_TO_MINUTES = 1000 * 60;
+        var timeout,
+            $minutes = $('#minutes'),
+            $success = $('#success'),
+            $failure = $('#failure');
+        function ask() {
+            clearTimeout(timeout)
+            var success = confirm("How's your posture?\n\nOK = good posture\nCancel = bad posture");
+            var mins = parseFloat($minutes.val()) || 1,
+                multiplier = parseFloat(success ? $success.val() : $failure.val()) || (success ? 1.6 : 0.5);
+            var newMins = mins * multiplier;
+            $minutes.val(newMins);
+            timeout = setTimeout(ask, newMins * MILISECONDS_TO_MINUTES);
+        }
+        function stop() {
+            clearTimeout(timeout);
+        }
+        $('#go').click(ask);
+        $('#stop').click(stop);
+    </script>
+</body>
+</html>
