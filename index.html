@@ -83,6 +83,7 @@
               seconds:  &nbsp;
               <button class="btn btn-primary" id="go" type="button">Go</button>
             </fieldset>
+            <label><input type="checkbox" id="play-sounds" name="play-sounds" checked="checked"> Play Sounds (requires browser support)</label>
         </form>
         <br />
         <form class="form-horizontal">
@@ -119,9 +120,15 @@
             $success = $('#success'),
             $failure = $('#failure'),
             $go = $('#go'),
+            $playSounds = $('#play-sounds'),
             intervalLength,
             intervalRemaining;
-            
+
+        // disable the play-sounds checkbox if the browser doesn't suport it
+        if (!window.AudioContext) {
+            $playSounds.click().disable().parent().addClass('disabled text-muted');
+        }
+
         // returns the current delay in seconds
         function getTime() {
             var hours = parseInt($hours.val(), 10) || 0,
@@ -142,13 +149,22 @@
             $minutes.val(minutes);
             $seconds.val(seconds);
         }
-        
-        
-        function ask() {
+
+        function showAlert() {
             var isPostureGood = confirm("How's your posture?\n\n - Good posture: click [OK]\n - Bad posture: click [Cancel]");
             var multiplier = parseFloat(isPostureGood ? $success.val() : $failure.val()) || (isPostureGood ? 1.6 : 0.5);
             // round up for good posture, round down for bad - this way we should avoid getting stuck on the same value.
             intervalLength = Math[isPostureGood ? "ceil" : "floor"](intervalLength * multiplier);
+            $go.click();
+        }
+        
+        function ask() {
+            stop();
+            if ($playSounds.is(':checked')) {
+                beepBoop().then(showAlert);
+            } else {
+                showAlert();
+            }
         }
         function update() {
             intervalRemaining--;
@@ -172,12 +188,13 @@
         function stop() {
             clearInterval(interval);
             setTime(intervalLength);
+            quiet()
         }
         $go.click(function() {
             var isRunning = $go.hasClass('btn-danger');
             if (isRunning) {
                 $go.addClass('btn-primary').removeClass('btn-danger').text('Go');
-                stop();
+                quiet();
             }
             else {
                 $go.addClass('btn-danger').removeClass('btn-primary').text('Stop');
@@ -185,6 +202,58 @@
                 setup();
             }
         });
+
+        function beepBoop() {
+            return playNote(540)
+                    .then(wait(250))
+                    .then(note(300))
+                    .then(wait(250))
+                    .then(quiet);
+        }
+
+        // note playNote returns a promise, but the rest return functions that then return a promise
+        // this allows the action to take place later, rather than as we're creating the promise chain
+
+        var ctx, boost, osc;
+        function playNote(freq) {
+            return new Promise(function(resolve, reject) {
+                if (!window.AudioContext) {
+                    return reject();
+                }
+                ctx = ctx || new AudioContext();
+                boost = boost || ctx.createGain();
+                boost.gain.value = 1;
+                if (!osc) {
+                    osc = ctx.createOscillator();
+                    osc.connect(boost);
+                    boost.connect(ctx.destination);
+                    osc.start(0);
+                }
+                osc.frequency.value = freq;
+                resolve();
+            });
+        }
+
+        function wait(ms) {
+            return function() {
+                return new Promise(function(resolve){
+                    setTimeout(function() {
+                        resolve();
+                    }, ms);
+                });
+            };
+        }
+
+        function note(freq, length) {
+            return playNote.bind(null, freq, length);
+        }
+
+        function quiet(){
+            return new Promise(function(resolve){
+                boost.gain.value = 0;
+                setTimeout(resolve, 100);
+            });
+        }
         
     </script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
