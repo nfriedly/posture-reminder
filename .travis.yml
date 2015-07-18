@@ -3,6 +3,8 @@ sudo: false
 node_js:
 - '0.12'
 script:
+- git config --global user.email "deploy-script@travis-ci.org"
+- git config --global user.name "Nathan Friedly [via Travis CI]"
 - npm run deploy
 env:
   global:

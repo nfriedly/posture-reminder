@@ -11,6 +11,7 @@ Todo
 * Simplify things 
 * Add audio
 * automated tests
+* limit deployments to master branch
 
 
 MIT License

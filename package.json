@@ -1,9 +1,11 @@
 {
   "name": "posture-reminder",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "description": "annoys you into having good posture",
   "author": "Nathan Friedly",
   "license": "MIT",
+  "repository": "https://github.com/nfriedly/posture-reminder",
+  "private": true,
   "dependencies": {
     "immutable": "^3.7.4",
     "jquery": "~2.1.3",
