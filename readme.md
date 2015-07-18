@@ -5,6 +5,14 @@ Annoys you into having good posture :P
 
 http://nfriedly.github.io/posture-reminder/
 
+Todo
+----
+
+* Simplify things 
+* Add audio
+* automated tests
+* automated deployment
+
 
 MIT License
 -----------

@@ -1,0 +1,43 @@
+.splash {
+  background: linear-gradient(20deg, #080F1F 30%, #2B4B5A 87%, #435E67 100%) repeat fixed 0 0 rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  padding: 4em 0 2em;
+  text-align: center;
+}
+.form-inline input[type=number].form-control {
+  display: inline; /* for smaller screens - override Bootstrap's default display: block*/
+  width: 33px;
+  border:0;
+  border-bottom: 1px solid white;
+  padding: 0;
+  margin: 0 3px 3px 5px;
+  background:inherit;
+  color: inherit;
+  -moz-box-shadow: 0 0 0 black;
+  -webkit-box-shadow: 0 0 0 black;
+  box-shadow: 0 0 0 black;
+  height: 20px;
+  line-height: 1;
+  text-align: right;
+}
+.banner {
+  display: inline-block;
+}
+.banner i.fa {
+  font-size: 1.5em;
+  top: 10px;
+  position: relative;
+}
+
+.counter input[type=number] {
+  width: 2.5em;
+  margin: 0 1em;
+}
+
+.counter input[type=number]:first-child {
+  margin-left: 0;
+}
+
+.ask .btn {
+  margin-right: 1em;
+}
