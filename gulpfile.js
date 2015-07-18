@@ -157,7 +157,9 @@ gulp.task('build', function() {
 
 gulp.task('deploy', function() {
   return gulp.src('./dist/**/*')
-    .pipe($.ghPages());
+    .pipe($.ghPages({
+      remoteUrl: process.env.GH_KEY ? 'https://' + process.env.GH_KEY + '@github.com/nfriedly/posture-reminder' : undefined
+    }));
 });
 
 gulp.task('default', ['build']);

@@ -11,7 +11,6 @@ Todo
 * Simplify things 
 * Add audio
 * automated tests
-* automated deployment
 
 
 MIT License

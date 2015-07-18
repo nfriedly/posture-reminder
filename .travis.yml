@@ -1,4 +1,9 @@
 language: node_js
 node_js:
-- '0.11'
-- '0.10'
+- '0.12'
+script:
+- npm run deploy
+env:
+  global:
+    # GH_KEY env variable with a "personal access token" - https://github.com/settings/tokens
+    secure: "PkkH2QMRX6FdGZtz5wnBh8b8tONJO0WEDBjEkhlxDID9Fp3TwZAB/ju+uV365gRodej4EUYkfNNmSD7wAh9YnSomZt4B22xcLwMS2JTiD+vO7K+E/cbRv60RnVR2phV6WbreVwV0JvdGSOoU7IWEddRuzPQfGXWGneXAmm2VDuw="
