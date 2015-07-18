@@ -42,7 +42,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "postinstall": "bower install",
     "start": "./node_modules/gulp/bin/gulp.js serve",
     "build": "./node_modules/gulp/bin/gulp.js build",
     "deploy": "gulp build && gulp deploy"
