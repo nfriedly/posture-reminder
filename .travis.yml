@@ -9,4 +9,4 @@ script:
 env:
   global:
     # GH_KEY env variable with a "personal access token" - https://github.com/settings/tokens
-    secure: "PkkH2QMRX6FdGZtz5wnBh8b8tONJO0WEDBjEkhlxDID9Fp3TwZAB/ju+uV365gRodej4EUYkfNNmSD7wAh9YnSomZt4B22xcLwMS2JTiD+vO7K+E/cbRv60RnVR2phV6WbreVwV0JvdGSOoU7IWEddRuzPQfGXWGneXAmm2VDuw="
+    secure: J6aak8ciCjiJ/rBP9If3CzKzPwyHoZbZKuMtQJcOr5UkAm6EqydpvHPv63RvQlit8XXE6if2v7pdy7Mxy9ZXvE3/D7nwbOkiQ5PaX/Rh1v7GVb7160fYUqUNkgCdMNHEcQ0Yqgr/z6lrzIW618hbgvr1rUPoiK093MuOOoiEz7M=
